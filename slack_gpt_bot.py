@@ -33,11 +33,12 @@ def command_handler(body, context):
         reply_message_ts = slack_resp['message']['ts']
         conversation_history = get_conversation_history(channel_id, thread_ts)
         messages = process_conversation_history(conversation_history, bot_user_id)
-        num_tokens = num_tokens_from_messages(messages)
+        model = "gpt-3.5-turbo"
+        num_tokens = num_tokens_from_messages(messages, model=model)
         print(f"Number of tokens: {num_tokens}")
 
         openai_response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model=model,
             messages=messages,
             stream=True
         )
